@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
+  <endpoint implementation="edu.ws.FileServerImpl" name="FileServerImpl" url-pattern="/FileServerImpl"/>
+  <endpoint implementation="edu.ws.UserServerImpl" name="UserServerImpl" url-pattern="/UserServerImpl"/>
+  <endpoint implementation="edu.ws.CertificateServerImpl" name="CertificateServerImpl" url-pattern="/CertificateServerImpl"/>
+</endpoints>

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
-    <services/>
-    <clients/>
+  <services>
+    <service name="FileServerImpl">
+      <implementation-class>edu.ws.FileServerImpl</implementation-class>
+    </service>
+    <service name="UserServerImpl">
+      <implementation-class>edu.ws.UserServerImpl</implementation-class>
+    </service>
+    <service name="CertificateServerImpl">
+      <implementation-class>edu.ws.CertificateServerImpl</implementation-class>
+    </service>
+  </services>
+  <clients/>
+  <jsr109>false</jsr109>
 </jax-ws>
