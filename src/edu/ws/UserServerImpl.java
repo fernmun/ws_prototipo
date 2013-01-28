@@ -119,12 +119,13 @@ public class UserServerImpl implements UserServer {
         } catch (SQLException ex) {
             Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }finally {
-            if (con != null) 
+            if (con != null) { 
                 try {
                     con.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
         }
         return user;
     }

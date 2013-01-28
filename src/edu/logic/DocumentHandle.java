@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.logic;
 
 import java.io.ByteArrayOutputStream;
@@ -15,8 +11,10 @@ import java.util.logging.Logger;
 /**
  *
  * @author lmparra
+ * <strong>DocumentHandle</strong> class allow handle write and read electronic documents
+ * in bytes vector
  */
-public class Archivo {
+public class DocumentHandle {
     
   private static String nombre, ruta, msjExitoso, msjFallido;
   private byte[] buf, bytes;
@@ -26,7 +24,7 @@ public class Archivo {
     msjFallido = "No se ha podido crear el archivo";
   } 
   
-  public Archivo(String nombreArchivo, String rutaArchivo) {
+  public DocumentHandle(String nombreArchivo, String rutaArchivo) {
     
     nombre = nombreArchivo;
     ruta = rutaArchivo;
@@ -38,7 +36,7 @@ public class Archivo {
    * @param data Arreglo de bytes
    * @return Mensaje si fue exitoso o no la operación
    */
-  public String escribeArchivo(byte[] data) {
+  public String writeDocument(byte[] data) {
   
     if(data != null){     
       try {
@@ -62,7 +60,7 @@ public class Archivo {
    * @return Arreglo de bytes
    * @throws FileNotFoundException 
    */
-  public byte[] leeArchivo() throws FileNotFoundException {
+  public byte[] readDocument() throws FileNotFoundException {
     
     File file = new File(ruta + nombre);
     FileInputStream fis = new FileInputStream(file);

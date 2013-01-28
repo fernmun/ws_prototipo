@@ -4,7 +4,7 @@
  */
 package edu.ws;
 
-import edu.logic.Archivo;
+import edu.logic.DocumentHandle;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -22,11 +22,11 @@ import javax.xml.ws.soap.MTOM;
 
 //Service Implementation Bean
 @MTOM
-@WebService(endpointInterface = "edu.ws.FileServer")
+@WebService(endpointInterface = "edu.ws.FileServer", serviceName="FSImpl")
 public class FileServerImpl implements FileServer{
     
     private Properties prop;
-    private String fileName = "ws.properties";
+    private String fileName = "/Users/lmparra/NetBeansProjects/ws_prototipo/ws.properties";
     private InputStream in;
     
     public FileServerImpl() {
@@ -52,9 +52,9 @@ public class FileServerImpl implements FileServer{
 
     @Override
     public String uploadFile(byte[] data) {        
-        Archivo archivo = new Archivo(prop.getProperty("ws.dl_file"), prop.getProperty("ws.dl_folder"));
+        DocumentHandle archivo = new DocumentHandle(prop.getProperty("ws.dl_file"), prop.getProperty("ws.dl_folder"));
         
-        return archivo.escribeArchivo(data);
+        return archivo.writeDocument(data);
     }
 
 }

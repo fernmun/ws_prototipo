@@ -16,10 +16,10 @@ import java.util.Properties;
 public class DBConnector {
     
     private final String userName = "root", password = "", dbms="mysql", serverName = "localhost", portNumber="3306";
+    private Connection conn;
     
     public Connection getConnection() throws SQLException {
-
-        Connection conn = null;
+        
         Properties connectionProps = new Properties();
         connectionProps.put("user", this.userName);
         connectionProps.put("password", this.password);
