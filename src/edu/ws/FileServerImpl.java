@@ -1,16 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.ws;
 
 import edu.logic.DocumentHandle;
-import java.io.File;
-import java.io.FileInputStream;
+import edu.logic.Setting;
+import edu.logic.PropertiesTool;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
@@ -25,36 +20,31 @@ import javax.xml.ws.soap.MTOM;
 @WebService(endpointInterface = "edu.ws.FileServer", serviceName="FSImpl")
 public class FileServerImpl implements FileServer{
     
-    private Properties prop;
-    private String fileName = "/Users/lmparra/NetBeansProjects/ws_prototipo/ws.properties";
+    private PropertiesTool prop;
+    private String fileName = Setting.BASE_PATH + Setting.PROPERTIES_FILE;
     private InputStream in;
+    private DocumentHandle document;
     
-    public FileServerImpl() {
-        prop = new Properties();
-        try {
-            in = new FileInputStream(fileName);           
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(FileServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            prop.load(in);
-        } catch (IOException ex) {
-            Logger.getLogger(FileServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public FileServerImpl() throws IOException {
+        prop = new PropertiesTool(fileName);
     }
 
     @Override
     public byte[] downloadFile(String name) {        
-        File image = new File(prop.getProperty("ws.dl_folder") + name);
-        
-        return null;
+        document = new DocumentHandle(prop.getProperty("ws.dl_folder"), name);
+        try {
+            return document.readDocument();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FileServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     @Override
     public String uploadFile(byte[] data) {        
-        DocumentHandle archivo = new DocumentHandle(prop.getProperty("ws.dl_file"), prop.getProperty("ws.dl_folder"));
+        document = new DocumentHandle(prop.getProperty("ws.dl_file"), prop.getProperty("ws.dl_folder"));
         
-        return archivo.writeDocument(data);
+        return document.writeDocument(data);
     }
 
 }
