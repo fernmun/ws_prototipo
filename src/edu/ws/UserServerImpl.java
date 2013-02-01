@@ -19,83 +19,90 @@ import javax.xml.ws.soap.MTOM;
 @MTOM
 @WebService(endpointInterface = "edu.ws.UserServer")
 public class UserServerImpl implements UserServer {
+    
+    private Hashtable<String, Object> userObject;
+    private String[] user;
+    private DBConnector connector;
+    private Connection connection;
+    private PreparedStatement pstmt;
+    private ResultSet result;
+    private String passField;
+    private Vector<String> userdata;
+    private List<String> stringFields, intFields;
 
     @Override
     public Hashtable<String, Object> getUserData(int uid, String pass) {
         
-        Hashtable<String, Object> user = new Hashtable();
-        DBConnector connector = new DBConnector();
-        Connection con = null;
+        userObject = new Hashtable();
+        connector = new DBConnector();
+        connection = null;
                 
         try {
-            con = connector.getConnection();
-        
+            connection = connector.getConnection();
+            connection.setAutoCommit(false);
 
-            con.setAutoCommit(false);
-
-            PreparedStatement pstmt;
-            pstmt = con.prepareStatement("SELECT * FROM user " +
+            pstmt = connection.prepareStatement("SELECT * FROM user " +
                         "WHERE idUser = ? ");
             pstmt.setFloat(1, uid);
-            ResultSet result = pstmt.executeQuery();
+            result = pstmt.executeQuery();
             
-            String passField = "password";
-            List<String> stringFields = Arrays.asList("userName", "codigo", "name", "lastName");  
-            List<String> intFields = Arrays.asList("idUser");  
+            passField = "password";
+            stringFields = Arrays.asList("userName", "codigo", "name", "lastName");  
+            intFields = Arrays.asList("idUser");  
 
             result.next();
             if(result.getString(passField).compareTo(pass) == 0){
                 for(String field : intFields){
-                    user.put(field, result.getInt(field));
+                    userObject.put(field, result.getInt(field));
                 }
                 for(String field : stringFields){
-                    user.put(field, result.getString(field));
+                    userObject.put(field, result.getString(field));
                 }
             }
 
             
-            con.commit();
+            connection.commit();
             pstmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }finally {
-            if (con != null) 
+            if (connection != null) { 
                 try {
-                    con.close();
+                    connection.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
         }
         
-        return user;
+        return userObject;
     }
 
     @Override
     public String[] getUserDataByUserName(String userName, String pass) {
        
-        String[] user = new String[]{};
+        user = new String[]{};
         
-        DBConnector connector = new DBConnector();
-        Connection con = null;
+        connector = new DBConnector();
+        connection = null;
                 
         try {
-            con = connector.getConnection();
-        
+            connection = connector.getConnection();        
 
-            con.setAutoCommit(false);
+            connection.setAutoCommit(false);
 
             PreparedStatement pstmt;
-            pstmt = con.prepareStatement("SELECT idUser, userName, codigo, user.name, lastName, profile.name AS profile_name, password "
+            pstmt = connection.prepareStatement("SELECT idUser, userName, codigo, user.name, lastName, profile.name AS profile_name, password "
                     + "FROM user LEFT JOIN profile ON user.idProfile = profile.idProfile " +
                         "WHERE userName = ? ");
             pstmt.setString(1, userName);
-            ResultSet result = pstmt.executeQuery();
+            result = pstmt.executeQuery();
             
-            String passField = "password";
-            List<String> stringFields = Arrays.asList("userName", "codigo", "name", "lastName", "profile_name");  
-            List<String> intFields = Arrays.asList("idUser");  
+            passField = "password";
+            stringFields = Arrays.asList("userName", "codigo", "name", "lastName", "profile_name");  
+            intFields = Arrays.asList("idUser");  
 
-            Vector<String> userdata = new Vector();
+            userdata = new Vector();
             
             if(result.next()){
                 if(result.getString(passField).compareTo(pass) == 0){
@@ -110,14 +117,14 @@ public class UserServerImpl implements UserServer {
             
             user = (String[])userdata.toArray(new String[]{});
             
-            con.commit();
+            connection.commit();
             pstmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }finally {
-            if (con != null) { 
+            if (connection != null) { 
                 try {
-                    con.close();
+                    connection.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
