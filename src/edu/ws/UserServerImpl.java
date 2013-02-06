@@ -1,16 +1,14 @@
 package edu.ws;
 
-//Service Implementation Bean
-
 import edu.logic.DBConnector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
@@ -20,20 +18,20 @@ import javax.xml.ws.soap.MTOM;
 @WebService(endpointInterface = "edu.ws.UserServer")
 public class UserServerImpl implements UserServer {
     
-    private Hashtable<String, Object> userObject;
+    private HashMap<String, Object> userObject;
     private String[] user;
     private DBConnector connector;
     private Connection connection;
     private PreparedStatement pstmt;
     private ResultSet result;
     private String passField;
-    private Vector<String> userdata;
+    private ArrayDeque<String> userdata;
     private List<String> stringFields, intFields;
 
     @Override
-    public Hashtable<String, Object> getUserData(int uid, String pass) {
+    public HashMap<String, Object> getUserData(int uid, String pass) {
         
-        userObject = new Hashtable();
+        userObject = new HashMap();
         connector = new DBConnector();
         connection = null;
                 
@@ -102,7 +100,7 @@ public class UserServerImpl implements UserServer {
             stringFields = Arrays.asList("userName", "codigo", "name", "lastName", "profile_name");  
             intFields = Arrays.asList("idUser");  
 
-            userdata = new Vector();
+            userdata = new ArrayDeque();
             
             if(result.next()){
                 if(result.getString(passField).compareTo(pass) == 0){
@@ -131,7 +129,5 @@ public class UserServerImpl implements UserServer {
             }
         }
         return user;
-    }
-
-    
+    }    
 }
