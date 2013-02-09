@@ -1,8 +1,11 @@
 package edu.ws;
 
+<<<<<<< HEAD
 //Service Implementation Bean
 
 import com.sun.jmx.remote.internal.ArrayQueue;
+=======
+>>>>>>> a06d37d0578826ca03ae67f69d484cbaf98e6794
 import edu.logic.DBConnector;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +31,11 @@ public class UserServerImpl implements UserServer {
     private PreparedStatement pstmt;
     private ResultSet result;
     private String passField;
+<<<<<<< HEAD
     private ArrayDeque userdata;
+=======
+    private ArrayDeque<String> userdata;
+>>>>>>> a06d37d0578826ca03ae67f69d484cbaf98e6794
     private List<String> stringFields, intFields;
 
     @Override
@@ -131,7 +138,5 @@ public class UserServerImpl implements UserServer {
             }
         }
         return user;
-    }
-
-    
+    }    
 }

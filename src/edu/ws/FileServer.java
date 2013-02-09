@@ -23,6 +23,6 @@ public interface FileServer{
     @WebMethod byte[] downloadFile(String name);
 
     //update image to server
-    @WebMethod String uploadFile(byte[] data);
+    @WebMethod String uploadFile(byte[] data, String name);
 
 }

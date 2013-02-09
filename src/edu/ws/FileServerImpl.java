@@ -13,6 +13,9 @@ import javax.xml.ws.soap.MTOM;
 /**
  *
  * @author lmparra
+ * 
+ * <code>FileServerImpl</code> class implements <code>FileServer</code> class
+ * to create a web service that allow upload and download files.
  */
 
 //Service Implementation Bean
@@ -41,8 +44,8 @@ public class FileServerImpl implements FileServer{
     }
 
     @Override
-    public String uploadFile(byte[] data) {        
-        document = new DocumentHandle(prop.getProperty("ws.dl_file"), prop.getProperty("ws.dl_folder"));
+    public String uploadFile(byte[] data, String name) {        
+        document = new DocumentHandle(name, prop.getProperty("ws.dl_folder"));
         
         return document.writeDocument(data);
     }

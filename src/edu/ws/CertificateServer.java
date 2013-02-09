@@ -25,6 +25,6 @@ public interface CertificateServer{
     @WebMethod byte[] downloadCertificate(String name);
 
     //update a digital certificate to server
-    @WebMethod String uploadCertificate(byte[] data);
+    @WebMethod String uploadCertificate(byte[] data, String name);
 
 }
