@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.logic;
 
 import java.sql.Connection;
@@ -10,26 +6,27 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- *
+ * <code>DBConnector</code> Class allow to establish a quick connection
+ * with Database Engine
+ * 
  * @author david
  */
 public class DBConnector {
     
-    private final String userName = "root", password = "", dbms="mysql", serverName = "localhost", portNumber="3306";
     private Connection conn;
     
     public Connection getConnection() throws SQLException {
         
         Properties connectionProps = new Properties();
-        connectionProps.put("user", this.userName);
-        connectionProps.put("password", this.password);
+        connectionProps.put("user", Setting.DB_USER);
+        connectionProps.put("password", Setting.DB_PASS);
 
         conn = DriverManager.getConnection(
-                   "jdbc:" + this.dbms + "://" +
-                   this.serverName +
-                   ":" + this.portNumber + "/prototipo_servidor",
+                   "jdbc:" + Setting.DBMS + "://" +
+                   Setting.DB_SERVER_NAME +
+                   ":" + Setting.PORT_NUMBER + "/prototipo_servidor",
                    connectionProps);
-        System.out.println("Connected to database");
+        System.out.println("Connected successfully to database");
         return conn;
     }
 }
