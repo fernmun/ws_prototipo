@@ -3,4 +3,7 @@
   <endpoint implementation="edu.ws.FileServerImpl" name="FileServerImpl" url-pattern="/FileServerImpl"/>
   <endpoint implementation="edu.ws.UserServerImpl" name="UserServerImpl" url-pattern="/UserServerImpl"/>
   <endpoint implementation="edu.ws.CertificateServerImpl" name="CertificateServerImpl" url-pattern="/CertificateServerImpl"/>
+  <endpoint implementation="edu.ws.FileServerImpl" name="FileServerImpl" url-pattern="/FileServerImpl"/>
+  <endpoint implementation="edu.ws.UserServerImpl" name="UserServerImpl" url-pattern="/UserServerImpl"/>
+  <endpoint implementation="edu.ws.CertificateServerImpl" name="CertificateServerImpl" url-pattern="/CertificateServerImpl"/>
 </endpoints>

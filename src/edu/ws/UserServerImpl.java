@@ -30,7 +30,7 @@ public class UserServerImpl implements UserServer {
     private List<String> stringFields, intFields;
 
     @Override
-    public HashMap<String, Object> getUserData(int uid, String pass) {
+    public HashMap<String, Object> getUserDataByUid(int uid, String pass) {
         
         userObject = new HashMap();
         connector = new DBConnector();
@@ -90,7 +90,7 @@ public class UserServerImpl implements UserServer {
 
             connection.setAutoCommit(false);
        
-            pstmt = connection.prepareStatement("SELECT idUser, userName, codigo, user.name, lastName, profile.name AS profile_name, password "
+            pstmt = connection.prepareStatement("SELECT idUser, userName, codigo, lastName, profile.name AS profile_name, password "
                     + "FROM user LEFT JOIN profile ON user.idProfile = profile.idProfile " +
                         "WHERE userName = ? ");
             pstmt.setString(1, userName);

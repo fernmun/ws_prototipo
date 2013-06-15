@@ -24,7 +24,7 @@ public class DBConnector {
         conn = DriverManager.getConnection(
                    "jdbc:" + Setting.DBMS + "://" +
                    Setting.DB_SERVER_NAME +
-                   ":" + Setting.PORT_NUMBER + "/prototipo_servidor",
+                   ":" + Setting.PORT_NUMBER + "/" + Setting.DB_NAME,
                    connectionProps);
         System.out.println("Connected successfully to database");
         return conn;
