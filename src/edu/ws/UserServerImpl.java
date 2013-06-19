@@ -18,7 +18,7 @@ import javax.xml.ws.soap.MTOM;
 @MTOM
 @WebService(endpointInterface = "edu.ws.UserServer")
 public class UserServerImpl implements UserServer {
-    
+
     private HashMap<String, Object> userObject;
     private String[] user;
     private DBConnector connector;
@@ -31,11 +31,11 @@ public class UserServerImpl implements UserServer {
 
     @Override
     public HashMap<String, Object> getUserDataByUid(int uid, String pass) {
-        
+
         userObject = new HashMap();
         connector = new DBConnector();
         connection = null;
-                
+
         try {
             connection = connector.getConnection();
             connection.setAutoCommit(false);
@@ -44,10 +44,10 @@ public class UserServerImpl implements UserServer {
                         "WHERE idUser = ? ");
             pstmt.setFloat(1, uid);
             result = pstmt.executeQuery();
-            
+
             passField = "password";
-            stringFields = Arrays.asList("userName", "codigo", "name", "lastName");  
-            intFields = Arrays.asList("idUser");  
+            stringFields = Arrays.asList("userName", "codigo", "name", "lastName");
+            intFields = Arrays.asList("idUser");
 
             result.next();
             if(result.getString(passField).compareTo(pass) == 0){
@@ -59,13 +59,19 @@ public class UserServerImpl implements UserServer {
                 }
             }
 
-            
+
             connection.commit();
             pstmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
-            if (connection != null) { 
+        } catch (ClassNotFoundException ex) {
+        Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (InstantiationException ex) {
+        Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (IllegalAccessException ex) {
+        Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+      }finally {
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException ex) {
@@ -73,35 +79,35 @@ public class UserServerImpl implements UserServer {
                 }
             }
         }
-        
+
         return userObject;
     }
 
     @Override
     public String[] getUserDataByUserName(String userName, String pass) {
-       
+
         user = new String[]{};
-        
+
         connector = new DBConnector();
         connection = null;
-                
+
         try {
-            connection = connector.getConnection();        
+            connection = connector.getConnection();
 
             connection.setAutoCommit(false);
-       
-            pstmt = connection.prepareStatement("SELECT idUser, userName, codigo, lastName, profile.name AS profile_name, password "
+
+            pstmt = connection.prepareStatement("SELECT idUser, userName, user.name, codigo, lastName, profile.name AS profile_name, password "
                     + "FROM user LEFT JOIN profile ON user.idProfile = profile.idProfile " +
                         "WHERE userName = ? ");
             pstmt.setString(1, userName);
             result = pstmt.executeQuery();
-            
+
             passField = "password";
-            stringFields = Arrays.asList("userName", "codigo", "name", "lastName", "profile_name");  
-            intFields = Arrays.asList("idUser");  
+            stringFields = Arrays.asList("userName", "codigo", "name", "lastName", "profile_name");
+            intFields = Arrays.asList("idUser");
 
             userdata = new ArrayDeque();
-            
+
             if(result.next()){
                 if(result.getString(passField).compareTo(pass) == 0){
                     for(String field : intFields){
@@ -112,15 +118,21 @@ public class UserServerImpl implements UserServer {
                     }
                 }
             }
-            
+
             user = (String[])userdata.toArray(new String[]{});
-            
+
             connection.commit();
             pstmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
-            if (connection != null) { 
+        } catch (ClassNotFoundException ex) {
+        Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (InstantiationException ex) {
+        Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+      } catch (IllegalAccessException ex) {
+        Logger.getLogger(UserServerImpl.class.getName()).log(Level.SEVERE, null, ex);
+      }finally {
+            if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException ex) {
@@ -129,5 +141,5 @@ public class UserServerImpl implements UserServer {
             }
         }
         return user;
-    }    
+    }
 }
