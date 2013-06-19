@@ -38,12 +38,11 @@ public class FileServerImpl implements FileServer{
     private String fileName = Setting.BASE_PATH + Setting.PROPERTIES_FILE;
     private InputStream in;
     private DocumentHandle document;
-    private HashMap filesObject;
     private DBConnector connector;
     private Connection connection;
     private PreparedStatement pstmt;
     private ResultSet result;
-    private List<String> intFields;
+    private List<String> intFields,stringFields;
 
     public FileServerImpl() throws IOException {
         prop = new PropertiesTool(fileName);
@@ -82,7 +81,6 @@ public class FileServerImpl implements FileServer{
                         "WHERE idUser = ? ");
             pstmt.setFloat(1, uid);
             result = pstmt.executeQuery();
-            result.next();
 
             intFields = Arrays.asList("idDocument");
 
@@ -96,14 +94,13 @@ public class FileServerImpl implements FileServer{
             }
 
             filesObject = new int[userdata.size()];
-            System.out.println(userdata);
             int i = 0;
             for (Iterator it = userdata.iterator(); it.hasNext();) {
                 Object object = it.next();
                 filesObject[i] = (Integer)object;
+                System.out.println(filesObject[i]);
                 i++;
             }
-            System.out.println(filesObject);
 
             connection.commit();
             pstmt.close();
@@ -144,22 +141,26 @@ public class FileServerImpl implements FileServer{
             connection = connector.getConnection();
             connection.setAutoCommit(false);
 
-            pstmt = connection.prepareStatement("SELECT idDocument, name, type, type, path,state, created FROM user_document " +
-                        "WHERE idUser = ? ");
+            pstmt = connection.prepareStatement("SELECT idDocument, name, type, path,state, created FROM document " +
+                        "WHERE idDocument = ? ");
             pstmt.setFloat(1, idDocument);
             result = pstmt.executeQuery();
-            result.next();
 
-            intFields = Arrays.asList("idDocument", "name", "type", "type", "path", "state");
+            intFields = Arrays.asList("idDocument");
+            stringFields = Arrays.asList( "name", "type", "path", "state");
 
 
             ArrayDeque userdata = new ArrayDeque();
 
-            while(result.next()){
+            if(result.next()){
               for(String field : intFields){
                 userdata.add(""+result.getInt(field));
               }
-              userdata.add((Date)result.getDate("created"));
+              for(String field : stringFields){
+                  userdata.add(result.getString(field));
+              }
+              Date date = (Date)result.getDate("created");
+              userdata.add(date.toString());
             }
 
             filesObject = (String[])userdata.toArray(new String[]{});
