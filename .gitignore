@@ -2,3 +2,8 @@
 /build/
 /dist/
 nbbuild.xml
+manifest.mf
+/ws_prototipo/nbproject/private/
+README.md
+build.xml
+newreq.pem
