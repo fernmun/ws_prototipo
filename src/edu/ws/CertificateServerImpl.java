@@ -6,7 +6,7 @@ package edu.ws;
 
 //Service Implementation Bean
 
-import edu.logic.DocumentHandle;
+import edu.logic.DocumentHandler;
 import edu.logic.PropertiesTool;
 import edu.logic.Setting;
 import java.io.FileNotFoundException;
@@ -30,11 +30,11 @@ public class CertificateServerImpl implements CertificateServer {
     private PropertiesTool prop;
     private String fileName = Setting.BASE_PATH + Setting.PROPERTIES_FILE;
     private InputStream in;
-    private DocumentHandle document;
+    private DocumentHandler document;
 
     @Override
     public byte[] downloadCertificate(String name) {
-        document = new DocumentHandle(prop.getProperty("ws.dl_folder"), name);
+        document = new DocumentHandler(prop.getProperty("ws.dl_folder"), name);
         try {
             return document.readDocument();
         } catch (FileNotFoundException ex) {
@@ -45,7 +45,7 @@ public class CertificateServerImpl implements CertificateServer {
 
     @Override
     public String uploadCertificate(byte[] data, String name) {
-        document = new DocumentHandle(name, prop.getProperty("ws.dl_folder"));
+        document = new DocumentHandler(name, prop.getProperty("ws.dl_folder"));
         
         return document.writeDocument(data);
     }

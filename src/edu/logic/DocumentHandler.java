@@ -11,10 +11,10 @@ import java.util.logging.Logger;
 /**
  *
  * @author lmparra
- * <strong>DocumentHandle</strong> class allow handle write and read electronic documents
+ * <strong>DocumentHandler</strong> class allow handle write and read electronic documents
  * in bytes vector
  */
-public class DocumentHandle {
+public class DocumentHandler {
     
   private static String nombre, ruta, msjExitoso, msjFallido;
   private byte[] buf, bytes;
@@ -24,7 +24,7 @@ public class DocumentHandle {
     msjFallido = "No se ha podido crear el archivo";
   } 
   
-  public DocumentHandle(String nombreArchivo, String rutaArchivo) {
+  public DocumentHandler(String nombreArchivo, String rutaArchivo) {
     
     nombre = nombreArchivo;
     ruta = rutaArchivo;

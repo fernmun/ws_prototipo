@@ -1,7 +1,7 @@
 package edu.ws;
 
 import edu.logic.DBConnector;
-import edu.logic.DocumentHandle;
+import edu.logic.DocumentHandler;
 import edu.logic.Setting;
 import edu.logic.PropertiesTool;
 import java.io.FileNotFoundException;
@@ -37,7 +37,7 @@ public class FileServerImpl implements FileServer{
     private PropertiesTool prop;
     private String fileName = Setting.BASE_PATH + Setting.PROPERTIES_FILE;
     private InputStream in;
-    private DocumentHandle document;
+    private DocumentHandler document;
     private DBConnector connector;
     private Connection connection;
     private PreparedStatement pstmt;
@@ -50,7 +50,7 @@ public class FileServerImpl implements FileServer{
 
     @Override
     public byte[] downloadFile(String name) {
-        document = new DocumentHandle(prop.getProperty("ws.dl_folder"), name);
+        document = new DocumentHandler(prop.getProperty("ws.dl_folder"), name);
         try {
             return document.readDocument();
         } catch (FileNotFoundException ex) {
@@ -61,7 +61,7 @@ public class FileServerImpl implements FileServer{
 
     @Override
     public String uploadFile(byte[] data, String name) {
-        document = new DocumentHandle(name, prop.getProperty("ws.dl_folder"));
+        document = new DocumentHandler(name, prop.getProperty("ws.dl_folder"));
 
         return document.writeDocument(data);
     }
